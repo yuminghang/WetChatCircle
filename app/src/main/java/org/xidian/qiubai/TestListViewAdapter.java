@@ -62,7 +62,10 @@ public class TestListViewAdapter extends BaseAdapter {
         return data == null ? null : arg0;
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        if (MyApplication.map.get(position) == null) {
+            MyApplication.map.put(position, 0);
+        }
         try {
             if (data.size() == 0) {
                 return null;
@@ -105,7 +108,7 @@ public class TestListViewAdapter extends BaseAdapter {
                 for (int i = 0; i < bean.getPic_urls().size(); i++) {
                     String tempUrl = bean.getPic_urls().get(i).getPic_url();
                     int index = tempUrl.indexOf("w/500/q/80");
-                    StringBuilder url = new StringBuilder(tempUrl).delete(index, tempUrl.length()).append("w/80/q/20");
+                    StringBuilder url = new StringBuilder(tempUrl).delete(index, tempUrl.length()).append("w/180/q/120");
                     sb.append(url + "#");
                 }
                 contentimage = sb.toString();
@@ -139,17 +142,6 @@ public class TestListViewAdapter extends BaseAdapter {
             }
             final String finalName = name;
             final String finalXingbie = xingbie;
-            holder.headphoto.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View arg0) {
-                    if (finalXingbie.equals("M")) {
-                        Toast.makeText(context, finalName + " " + "男", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(context, finalName + " " + "女", Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-            });
             final String finalLoc = loc;
             holder.location.setOnClickListener(new OnClickListener() {
                 @Override
@@ -157,13 +149,19 @@ public class TestListViewAdapter extends BaseAdapter {
                     Toast.makeText(context, finalLoc, Toast.LENGTH_SHORT).show();
                 }
             });
+            if (MyApplication.map.get(position) > 0) {
+                holder.zan.setImageResource(R.drawable.zan_red);
+                holder.zan_num.setText("1");
+                holder.zan_num.setTextColor(context.getResources().getColor(R.color.red));
+            }
             holder.zan.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View arg0) {
                     String num = (String) holder.zan_num.getText();
                     if (num.equals("0")) {
+                        MyApplication.map.put(position, 1);
                         holder.zan.setImageResource(R.drawable.zan_red);
-                        holder.zan_num.setText(String.valueOf(Integer.parseInt(num) + 1));
+                        holder.zan_num.setText("1");
                         holder.zan_num.setTextColor(context.getResources().getColor(R.color.red));
                     } else {
                         Toast.makeText(context, "不能重复点赞。。", Toast.LENGTH_SHORT).show();

@@ -7,6 +7,8 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by ymh on 2016/11/29.
@@ -14,6 +16,7 @@ import java.util.Date;
 public class MyApplication extends Application {
     public static String timeScape;
     public static QiuBaiBean.DataEntity bean;
+    public static Map<Integer, Integer> map = new HashMap<>();
 
     @Override
     public void onCreate() {

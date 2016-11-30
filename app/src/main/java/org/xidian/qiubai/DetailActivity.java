@@ -1,6 +1,7 @@
 package org.xidian.qiubai;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -26,6 +27,7 @@ public class DetailActivity extends Activity {
     private int wh;
     private ImageView zan;
     private TextView zan_num;
+    private String pos;
 
     //bundle.putString("avatar", headpath);
 //    bundle.putString("name", bean.getData().get(arg2).getUser().getLogin());
@@ -36,6 +38,8 @@ public class DetailActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_detail);
         this.wh = (SysUtils.getScreenWidth(DetailActivity.this) - SysUtils.Dp2Px(DetailActivity.this, 99)) / 3;
+        Intent intent = getIntent();
+        pos = intent.getStringExtra("pos");
         initView();
         initData();
     }
@@ -121,14 +125,20 @@ public class DetailActivity extends Activity {
         location = (TextView) findViewById(R.id.location);
         zan = (ImageView) findViewById(R.id.zan);
         zan_num = (TextView) findViewById(R.id.zan_num);
+        if (MyApplication.map.get(Integer.valueOf(pos)) != null && MyApplication.map.get(Integer.valueOf(pos)) > 0) {
+            zan.setImageResource(R.drawable.zan_red);
+            zan_num.setText("1");
+            zan_num.setTextColor(getResources().getColor(R.color.red));
+        }
         zan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 String num = (String) zan_num.getText();
                 if (num.equals("0")) {
+                    MyApplication.map.put(Integer.valueOf(pos), 1);
                     zan.setImageResource(R.drawable.zan_red);
-                    zan_num.setText(String.valueOf(Integer.parseInt(num) + 1));
-                    zan_num.setTextColor(DetailActivity.this.getResources().getColor(R.color.red));
+                    zan_num.setText("1");
+                    zan_num.setTextColor(getResources().getColor(R.color.red));
                 } else {
                     Toast.makeText(DetailActivity.this, "不能重复点赞。。", Toast.LENGTH_SHORT).show();
                 }
